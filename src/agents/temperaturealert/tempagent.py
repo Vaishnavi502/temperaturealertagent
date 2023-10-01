@@ -1,4 +1,4 @@
-from uagents import Agent,Context,Protocol
+from uagents import Agent,Context,Model
 import requests
 import os
 import geocoder
@@ -7,11 +7,18 @@ from uagents.setup import fund_agent_if_low
 
 load_dotenv()
 
+user_location = None
+
 # Get API_KEY from .env
 api_key = os.getenv("API_KEY")
 
+class Message(Model):
+    message:str
+
 def read_temp():
-    loca = "Chennai, IN"
+    # loca = "Chennai, IN"
+    global user_location
+    loca = user_location
     response = requests.get(f'https://api.openweathermap.org/data/2.5/weather?APPID={api_key}&q={loca}&units=metric')
     curtemp = None
     if response.status_code != 200:
@@ -41,13 +48,17 @@ temp = Agent(
     )
 fund_agent_if_low(temp.wallet.address())
 
-# Print agent address
-print("uAgent address: ", temp.address)
+@temp.on_message(model=Message)
+async def check(ctx:Context, sender:str, msg:Message):
+    ctx.logger.info(f"Received message from {sender}:{msg.message}")
+    global user_location
+    user_location = msg.message
 
 @temp.on_interval(period=1.0) # Check temperature every microsecond
 async def check(ctx:Context):
+    # user_location = msg.Message
+    global user_location
+    print(user_location)
     cur_temperature = read_temp()
     ctx.logger.info(f"Current temperature: {cur_temperature}")
     alert_check(cur_temperature,20,30)
-
-# temp.run()
