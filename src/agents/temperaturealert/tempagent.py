@@ -50,4 +50,4 @@ async def check(ctx:Context):
     ctx.logger.info(f"Current temperature: {cur_temperature}")
     alert_check(cur_temperature,20,30)
 
-temp.run()
+# temp.run()
