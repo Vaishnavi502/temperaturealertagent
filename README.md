@@ -1,2 +1,2 @@
 # Temperature Alert Agent
-Created using uagents library (fetch.ai) and OpenWeatherMap (pyowm)
+Created using uagents library (fetch.ai) and OpenWeatherMap API
