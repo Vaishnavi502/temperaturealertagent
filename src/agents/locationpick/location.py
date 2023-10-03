@@ -11,8 +11,8 @@ TEMP_AGENT_ADDR = 'agent1qf4e4eedqhfuvmgkze35ujp2s68alnt29erla6fnazw9wyuwzdg7y43
 def get_location():
     cur_locate = geocoder.ip('me')
     print(cur_locate)
-    # location = cur_locate.latlng
-    loca = f"{cur_locate.state}, {cur_locate.country}"
+    loca = cur_locate.latlng
+    # loca = f"{cur_locate.state}, {cur_locate.country}"
     # print(loca)
     return loca
 
